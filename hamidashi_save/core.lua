@@ -162,7 +162,7 @@ local layout = {
 local function setup()
 	collectgarbage("stop")
 
-	print("[*] nora2hax by alula")
+	print("[*] hamihax by alula and KurisuWaifu")
 	print("[*] sending big thanks to: Gezine, kurumuz, zecoxao, DialingSpoon")
 
 	print("[+] setting up initial primitives...")
