@@ -97,8 +97,9 @@ local offsets_sdk = {
 	socket_close = 0xc1930,
 	socket_fcntl = 0xc1980,
 	socket_get_last_error = 0xc1b80,
-	-- connect = 0x000000,
-	-- getsockname = 0x000000,
+	-- nifm
+	-- nifm_initialize = 0x000000,
+	-- nifm_get_current_primary_ip_address = 0x000000,
 	-- inet_ntop = 0x000000,
 }
 
