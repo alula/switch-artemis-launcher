@@ -96,6 +96,9 @@ local offsets_sdk = {
 	socket_close = 0x3882b0,
 	socket_fcntl = 0x388390,
 	socket_get_last_error = 0x3885a0,
+	-- connect = 0x000000,
+	-- getsockname = 0x000000,
+	-- inet_ntop = 0x000000,
 }
 
 -- The arb r/w needs 24 bytes for a w/r cycle, so the two GOT offsets after the

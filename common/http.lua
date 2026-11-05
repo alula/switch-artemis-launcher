@@ -334,6 +334,47 @@ local function already_initialized(res)
 		and math.floor(res / 512) % 8192 == 2
 end
 
+local function get_switch_ip()
+	-- maintain backwards compatibility with original core.lua
+	local offsets = N.offsets_sdk
+	if not offsets.connect or not offsets.getsockname or not offsets.inet_ntop then
+	    return nil
+	end
+
+	local AF_INET = 2
+	local SOCK_DGRAM = 2
+	local SOCKADDR_LEN = 16
+
+	local fd = i32(N.call_deep(N.sdk("socket_socket"), AF_INET, SOCK_DGRAM, 0))
+	if fd < 0 then
+	    return nil
+	end
+
+	-- get local IP using 1.1.1.1 (Cloudflare DNS) without sending any packets
+	local dest = string.char(SOCKADDR_LEN, AF_INET, 0, 9, 1, 1, 1, 1) .. string.rep("\0", 8)
+	N.write_bytes(ADDR, dest)
+
+	local rc = i32(N.call_deep(N.sdk("connect"), fd, ADDR, #dest))
+	if rc == 0 then
+	    N.poke(ADDRLEN, SOCKADDR_LEN)
+	    rc = i32(N.call_deep(N.sdk("getsockname"), fd, ADDR, ADDRLEN))
+	end
+
+	N.call_deep(N.sdk("socket_close"), fd)
+
+	if rc ~= 0 then
+	    return nil
+	end
+
+	local ip = string.rep("\0", 64)
+	local ptr = N.call_deep(N.sdk("inet_ntop"), AF_INET, ADDR + 4, data_addr(ip), #ip)
+	if ptr == 0 then
+		return nil
+	end
+
+	return ip:match("^[%d%.]+")
+end
+
 local function post_init()
 	local res = i32(N.call_deep(N.sdk("socket_initialize"), socket_pool,
 		0xC0000, 0x20000, CONCURRENCY))
@@ -371,7 +412,7 @@ local function post_init()
 
 	st.lfd = fd
 	st.phase = "accept"
-	log(string.format("HTTP server listening on http://CONSOLE_IP:%d", PORT))
+	log(string.format("HTTP server listening on http://%s:%d", get_switch_ip() or "CONSOLE_IP", PORT))
 end
 
 local function pump_accept()

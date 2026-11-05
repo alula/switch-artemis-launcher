@@ -97,6 +97,9 @@ local offsets_sdk = {
 	-- ldp x0..x7,[sp...]; ldp x29,x30,[sp,#0x40]; add sp,#0x50; ret
 	-- (the call path's argument frame; it rets into g_call2)
 	vcall8_restore = 0x3d9e54,
+	connect = 0x14d3c0,
+	getsockname = 0x14d410,
+	inet_ntop = 0x91450,
 }
 
 -- The arb r/w needs 24 bytes for a w/r cycle, so the two GOT offsets after the
