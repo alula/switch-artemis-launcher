@@ -71,7 +71,7 @@ local offsets_sdk = {
 	get_message_buffer_on_tls = 0x14ba80,
 	-- TODO: find the correct offset
 	-- nn::fs::CommitSaveData
-	fs_commit_save_data = 0x000000,
+	fs_commit_save_data = 0x0a7f70,
 	-- nn::os::YieldThread(): no arguments, no result
 	os_yield_thread = 0x1370f0,
 	-- nn::os::GetThreadId(ThreadType const*): ldr x0,[x0,#0x1b8]; ret
