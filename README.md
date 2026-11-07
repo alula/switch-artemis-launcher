@@ -1,4 +1,4 @@
-# norahax / seedsowhax / hamihax
+# norahax / seedsowhax / hamihax / jinkihax
 
 On-device, persistent userland exec demo through Artemis Engine visual novels
 
@@ -8,6 +8,7 @@ On-device, persistent userland exec demo through Artemis Engine visual novels
 - `010042d022aea000` - Seedsow Lullaby **Demo** https://www.nintendo.com/us/store/products/seedsow-lullaby-switch/ (pulled from eShop)
 - `0100ee5021c9e000` - Seedsow Lullaby **Full Game** (same binaries as demo — all offsets identical)
 - `0100848014154000` - Hamidashi Creative **Demo** https://store-jp.nintendo.com/item/software/D70010000037967 (should be first when you type "iMel" on JP eShop)
+- `0100c0501396e000` - Jinki Resurrection **Full Game**
 
 ## Setup (Demo)
 
@@ -34,6 +35,22 @@ python tools/build_fullgame.py --backup path/to/your_backup.zip --output seedsow
 The script patches the autosave's script caret to redirect execution to `inject.asb`, which bootstraps the launcher. Both autosave and save slot 1 are patched, so loading either one will trigger the launcher.
 
 No additional offsets or binaries are needed — the full game ships the exact same main and SDK executables as the demo.
+
+## Setup (Jinki Resurrection)
+
+Jinki Resurrection is a separate Artemis Engine game with its own binaries and offsets. Same build-from-backup approach as the Seedsow full game.
+
+1. Use JKSV to back up your Jinki Resurrection save
+2. Run the build script:
+
+```
+python tools/build_jinki.py --backup path/to/your_jinki_backup.zip --output jinki_exploit.zip
+```
+
+3. Restore `jinki_exploit.zip` with JKSV
+4. Launch Jinki Resurrection and **load save slot 1**
+
+Jinki uses engine v1.80.mw.adv with Lua 5.3 and IndexedSave v1003.
 
 ## Updating
 
